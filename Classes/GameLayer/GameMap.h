@@ -24,6 +24,8 @@ public:
     Size tile_size;
     Size map_size;
     
+//    Point mario_birthPos;//英雄出生点
+//    Point getMarioBirthPos();//获取英雄出生点
     
 private:
     //初始化

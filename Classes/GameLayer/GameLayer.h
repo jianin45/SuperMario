@@ -20,17 +20,54 @@ class GameLayer : public Layer
 {
 public:
     Layer* main_layer;
+    Size win_size;
     
     GameMap* main_map;
     Size map_size;
-    Point map_begin_pos;//地图起始点，上半部分为地图
+    Point map_beginPos;//地图起始点，上半部分为地图
     
     Hero* hero;
     Size hero_size;
     Point birth_pos;//英雄出生点
     
+    //手柄相关
+    Sprite* controlUI;//背景图
+    
+    Sprite* image_backKey;
+    Sprite* image_jump;
+    Sprite* image_fire;
+    SpriteFrame* backKey_normal;
+    SpriteFrame* backKey_left;
+    SpriteFrame* backKey_right;
+    SpriteFrame* AB_normal;
+    SpriteFrame* AB_selected;
+    
+    Point pos_backKey;//方向背景
+    Point pos_leftKey;
+    Point pos_rightKey;
+    Point pos_jumpKey;
+    Point pos_fireKey;
+    Point pos_setKey;
+    
+    Menu* menu;//按键
+    MenuItem* menu_leftKey;
+    MenuItem* menu_rightKey;
+    MenuItem* menu_jumpKey;
+    MenuItem* menu_fireKey;
+    MenuItem* menu_setKey;
+   
+    
+#pragma mark -私有和不常用public
+    
 private:
-    void initHeroAndMap();//加载地图
+    void initHeroAndMap();//加载地图和英雄
+    void initControlUI();//加载手柄
+    //按钮
+    void menuCallBackLeft(Ref* sender);
+    void menuCallBackRight(Ref* sender);
+    void menuCallBackJump(Ref* sender);
+    void menuCallBackFire(Ref* sender);
+    void menuCallBackSet(Ref* sender);
     
 public:
     GameLayer();
@@ -38,7 +75,6 @@ public:
     bool init();
     
     CREATE_FUNC(GameLayer);
-    
 };
 
 #endif /* defined(__SuperMarry__GameLayer__) */

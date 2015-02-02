@@ -30,6 +30,9 @@ onEnter()是node的虚方法，子类重写onEnter()要调用基类的onEnter();
 文件用于实现快速高效的瓦片地图功能。
 main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx");
 
+2月2日
+1.添加手柄及铵钮；
+
 
 
 

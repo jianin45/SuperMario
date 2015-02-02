@@ -9,8 +9,10 @@
 #include "GameMap.h"
 
 GameMap::GameMap()
+//mario_birthPos(Point::ZERO)
 
 {
+    
     
     
 }
@@ -41,6 +43,13 @@ void GameMap::extraInit()
     
     
 }
+
+/*
+Point GameMap::getMarioBirthPos()
+{
+    return mario_birthPos;
+}
+*/
 
 
 

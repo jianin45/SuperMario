@@ -41,13 +41,16 @@ bool Hero::heroInit()
     
     main_body = Sprite::create("smallWalkRight.png",Rect(0,0,14,16));
     main_body->setAnchorPoint(Vec2(0,0));
+    
     this->addChild(main_body);
 
     return true;
 }
 
-
-
+Size Hero::getCurrentSize()
+{
+    return current_size;
+}
 
 
 

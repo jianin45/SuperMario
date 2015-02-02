@@ -27,8 +27,10 @@ public:
     Sprite* main_body;
     Size current_size,small_size,big_size;
     
+    
     MarioDirection state;
     
+    Size getCurrentSize();
     
     
 private:

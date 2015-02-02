@@ -25,30 +25,23 @@ MainMenu::MainMenu()
     this->addChild(background);
     
 
-    _start_game = MenuItemImage::create("startgame_normal.png", "startgame_select.png", CC_CALLBACK_0(MainMenu::menuCallBackForStartGame, this));
+    _start_game = MenuItemImage::create("startgame_normal.png","startgame_select.png",
+                                        CC_CALLBACK_0(MainMenu::menuCallBackForStartGame, this));
     _start_game->setPosition(Vec2(win_size.width/2,win_size.height/2));
     
-    _menu = Menu::create(_start_game,NULL);
-    _start_game = MenuItemImage::create("startgame_normal.png",
-                                        "startgame_select.png",
-                                        CC_CALLBACK_0(MainMenu::menuCallBackForStartGame,
-                                                      this));
-    _start_game->setPosition(Vec2(win_size.width/2,win_size.height/2));
+    //_menu = Menu::create(_start_game,NULL);
     
-    _quit_game = MenuItemImage::create("quitgame_normal.png",
-                                       "quitgame_select.png",
+    _quit_game = MenuItemImage::create("quitgame_normal.png","quitgame_select.png",
                                        CC_CALLBACK_0(MainMenu::menuQuit,
                                                      this));
     _quit_game->setPosition(Vec2(win_size.width/2,win_size.height/2-40));
     
-    _about_game = MenuItemImage::create("about_normal.png",
-                                        "about_select.png",
+    _about_game = MenuItemImage::create("about_normal.png","about_select.png",
                                         CC_CALLBACK_0(MainMenu::menuAboutGame,
                                                       this));
     _about_game->setPosition(win_size.width-50,20);
     
-    _setting_game = MenuItemImage::create("Setting_n.png",
-                                          "setting_s.png",
+    _setting_game = MenuItemImage::create("Setting_n.png","setting_s.png",
                                           CC_CALLBACK_0(MainMenu::menuSettingGame,
                                                         this));
     _setting_game->setPosition(Vec2(win_size.width/2,win_size.height/2-80));
