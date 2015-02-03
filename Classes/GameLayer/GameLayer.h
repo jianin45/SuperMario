@@ -36,11 +36,11 @@ public:
     Sprite* image_backKey;
     Sprite* image_jump;
     Sprite* image_fire;
-    SpriteFrame* backKey_normal;
-    SpriteFrame* backKey_left;
-    SpriteFrame* backKey_right;
-    SpriteFrame* AB_normal;
-    SpriteFrame* AB_selected;
+    SpriteFrame* frame_backKey_normal;//单次点击时显示
+    SpriteFrame* frame_backKey_left;//长按时显示
+    SpriteFrame* frame_backKey_right;//同上
+    SpriteFrame* frame_AB_normal;
+    SpriteFrame* frame_AB_selected;
     
     Point pos_backKey;//方向背景
     Point pos_leftKey;

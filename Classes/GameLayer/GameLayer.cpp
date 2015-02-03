@@ -57,10 +57,12 @@ bool GameLayer::init()
 void GameLayer::menuCallBackLeft(Ref* sender)
 {
     log("%s",__FUNCTION__);
+    image_backKey->setSpriteFrame(frame_backKey_normal);
 }
 void GameLayer::menuCallBackRight(cocos2d::Ref *sender)
 {
     log("%s",__FUNCTION__);
+    image_backKey->setSpriteFrame(frame_backKey_normal);
 }
 void GameLayer::menuCallBackJump(cocos2d::Ref *sender)
 {
@@ -82,17 +84,23 @@ void GameLayer::initControlUI()
     controlUI = Sprite::create("controlUI.png");
     controlUI->setAnchorPoint(Vec2(0,0));
     
-    backKey_normal = SpriteFrame::create("backKeyImage.png", Rect(0, 0, 72, 72));
-    backKey_left = SpriteFrame::create("backKeyLeft.png", Rect(0, 0, 72, 72));
-    backKey_right = SpriteFrame::create("backKeyRight.png", Rect(0, 0, 72, 72));
-    AB_normal = SpriteFrame::create("AB_normal.png", Rect(0,0,72,50));
-    AB_selected = SpriteFrame::create("AB_select.png", Rect(0,0,72,50));
+    frame_backKey_normal = SpriteFrame::create("backKeyImage.png", Rect(0, 0, 72, 72));
+    frame_backKey_left = SpriteFrame::create("backKeyLeft.png", Rect(0, 0, 72, 72));
+    frame_backKey_right = SpriteFrame::create("backKeyRight.png", Rect(0, 0, 72, 72));
+    frame_AB_normal = SpriteFrame::create("AB_normal.png", Rect(0,0,72,50));
+    frame_AB_selected = SpriteFrame::create("AB_select.png", Rect(0,0,72,50));
+    
+    frame_backKey_normal->retain();
+    frame_backKey_left->retain();
+    frame_backKey_right->retain();
+    frame_AB_normal->retain();
+    frame_AB_selected->retain();
     
     image_backKey = Sprite::create("backKeyImage.png");
     image_backKey->setPosition(pos_backKey);
-    image_jump = Sprite::createWithSpriteFrame(AB_normal);
+    image_jump = Sprite::createWithSpriteFrame(frame_AB_normal);
     image_jump->setPosition(pos_jumpKey);
-    image_fire = Sprite::createWithSpriteFrame(AB_normal);
+    image_fire = Sprite::createWithSpriteFrame(frame_AB_normal);
     image_fire->setPosition(pos_fireKey);
     
     menu_leftKey = MenuItemImage::create("leftright.png", "AB_select.png",

@@ -33,6 +33,9 @@ main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx")
 2月2日
 1.添加手柄及铵钮；
 
+2月3日
+1.cocos2dx 3.x 迭代器 ValueVector::iterator ;
+2.遍历方法 for( auto e: objects) {};
 
 
 
