@@ -36,6 +36,11 @@ main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx")
 2月3日
 1.cocos2dx 3.x 迭代器 ValueVector::iterator ;
 2.遍历方法 for( auto e: objects) {};
+3.tileMap很大，真的很大；哈哈！怎么可以流畅的跑起来呢？
+
+2月4日
+1.按键弃用，因为MenuItem会屏蔽掉触摸分发事件；
+2.添加触摸分发事件的区域判断；
 
 
 

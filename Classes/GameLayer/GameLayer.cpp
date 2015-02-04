@@ -19,12 +19,12 @@ GameLayer::GameLayer():
 main_map(nullptr),map_size(Size::ZERO),map_beginPos(Vec2(0.0f,96.0f)),
 
 //英雄初始化
-hero(nullptr),hero_size(Vec2(0,0)),birth_pos(Vec2(20.0f,32.0f)),
+hero(nullptr),hero_size(Vec2(0,0)),birth_pos(Vec2(20.0f,32.0f+100)),
 
 //按键初始化
-pos_backKey(Vec2(84, 48)),pos_leftKey(Vec2(40, 48)),pos_rightKey(Vec2(128, 48)),
-pos_jumpKey(Vec2(432,35)),pos_fireKey(Vec2(353, 35)),pos_setKey(Vec2(260,33))
-
+pos_backkey(Vec2(84, 48)),pos_leftkey(Vec2(40, 48)),pos_rightkey(Vec2(128, 48)),
+pos_jumpkey(Vec2(432,35)),pos_firekey(Vec2(353, 35)),
+pos_setkey(Vec2(260,33))
 //
 
 {
@@ -38,7 +38,7 @@ pos_jumpKey(Vec2(432,35)),pos_fireKey(Vec2(353, 35)),pos_setKey(Vec2(260,33))
 
 GameLayer::~GameLayer()
 {
-    
+    this->unscheduleUpdate();
 }
 
 bool GameLayer::init()
@@ -46,94 +46,150 @@ bool GameLayer::init()
     log("进入游戏界面！");
     
     this->initHeroAndMap();
+    
     this->initControlUI();
     
+    this->initKeyRect();
     
+    
+    
+    this->addTouchListener();
+    
+    this->scheduleUpdate();
     
     return true;
 }
-#pragma mark -Menu
 
-void GameLayer::menuCallBackLeft(Ref* sender)
+void GameLayer::update(float dt)
 {
-    log("%s",__FUNCTION__);
-    image_backKey->setSpriteFrame(frame_backKey_normal);
+    Point pos_mapCurrent = main_map->getPosition();
+    if (-pos_mapCurrent.x <= map_size.width-win_size.width)
+    {
+        main_map->setPosition(Vec2(pos_mapCurrent.x-2, pos_mapCurrent.y));
+    }
+    else
+    {
+        main_map->setPosition(Vec2(0, 0));
+    }
+    
 }
-void GameLayer::menuCallBackRight(cocos2d::Ref *sender)
+
+
+
+#pragma mark -Touch
+
+void GameLayer::onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event)
 {
-    log("%s",__FUNCTION__);
-    image_backKey->setSpriteFrame(frame_backKey_normal);
+    log("乱点！");
+    for(auto& it:touches)
+    {
+        Touch* touch = (Touch*)it;
+        Point pos_touch = touch->getLocation();
+        
+    }
+    
 }
-void GameLayer::menuCallBackJump(cocos2d::Ref *sender)
+
+void GameLayer::onTouchesMoved(const std::vector<Touch*>& touches, Event *unused_event)
 {
-    log("%s",__FUNCTION__);
+    log("我说，放…… …… …… ……开!");
 }
-void GameLayer::menuCallBackFire(cocos2d::Ref *sender)
+
+void GameLayer::onTouchesEnded(const std::vector<Touch*>& touches, Event *unused_event)
 {
-    log("%s",__FUNCTION__);
+    log("放开就放开！");
 }
-void GameLayer::menuCallBackSet(cocos2d::Ref *sender)
+
+void GameLayer::onTouchesCancelled(const std::vector<Touch*>&touches, Event *unused_event)
 {
-    log("%s",__FUNCTION__);
+    log("touch cancel 是怎么一回事？");
 }
+
+
 
 #pragma mark -Pravite
+
+void GameLayer::addTouchListener()
+{
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = CC_CALLBACK_2(GameLayer::onTouchesBegan, this);
+    listener->onTouchesMoved = CC_CALLBACK_2(GameLayer::onTouchesMoved, this);
+    listener->onTouchesEnded = CC_CALLBACK_2(GameLayer::onTouchesEnded, this);
+    listener->onTouchesCancelled = CC_CALLBACK_2(GameLayer::onTouchesCancelled, this);
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+}
+
+void GameLayer::initKeyRect()
+{
+    rect_leftkey = Rect(pos_leftkey.x-menu_leftkey->getContentSize().width/2,
+                        pos_leftkey.y-menu_leftkey->getContentSize().height/2,
+                        menu_leftkey->getContentSize().width,
+                        menu_leftkey->getContentSize().height);
+    rect_rightkey = Rect(pos_rightkey.x-menu_rightkey->getContentSize().width/2,
+                         pos_rightkey.y-menu_rightkey->getContentSize().height/2,
+                         menu_rightkey->getContentSize().width,
+                         menu_rightkey->getContentSize().height);
+    rect_firekey = Rect(pos_firekey.x-menu_firekey->getContentSize().width/2,
+                        pos_firekey.y-menu_firekey->getContentSize().height/2,
+                        menu_firekey->getContentSize().width,
+                        menu_firekey->getContentSize().height);
+    rect_jumpkey = Rect(pos_jumpkey.x-menu_jumpkey->getContentSize().width/2,
+                        pos_jumpkey.y-menu_jumpkey->getContentSize().height/2,
+                        menu_jumpkey->getContentSize().width,
+                        menu_jumpkey->getContentSize().height);
+}
 
 void GameLayer::initControlUI()
 {
     controlUI = Sprite::create("controlUI.png");
     controlUI->setAnchorPoint(Vec2(0,0));
     
-    frame_backKey_normal = SpriteFrame::create("backKeyImage.png", Rect(0, 0, 72, 72));
-    frame_backKey_left = SpriteFrame::create("backKeyLeft.png", Rect(0, 0, 72, 72));
-    frame_backKey_right = SpriteFrame::create("backKeyRight.png", Rect(0, 0, 72, 72));
+    frame_backkey_normal = SpriteFrame::create("backkeyImage.png", Rect(0, 0, 72, 72));
+    frame_backkey_left = SpriteFrame::create("backkeyLeft.png", Rect(0, 0, 72, 72));
+    frame_backkey_right = SpriteFrame::create("backkeyRight.png", Rect(0, 0, 72, 72));
     frame_AB_normal = SpriteFrame::create("AB_normal.png", Rect(0,0,72,50));
     frame_AB_selected = SpriteFrame::create("AB_select.png", Rect(0,0,72,50));
     
-    frame_backKey_normal->retain();
-    frame_backKey_left->retain();
-    frame_backKey_right->retain();
+    frame_backkey_normal->retain();
+    frame_backkey_left->retain();
+    frame_backkey_right->retain();
     frame_AB_normal->retain();
     frame_AB_selected->retain();
     
-    image_backKey = Sprite::create("backKeyImage.png");
-    image_backKey->setPosition(pos_backKey);
+    image_backkey = Sprite::create("backkeyImage.png");
+    image_backkey->setPosition(pos_backkey);
     image_jump = Sprite::createWithSpriteFrame(frame_AB_normal);
-    image_jump->setPosition(pos_jumpKey);
+    image_jump->setPosition(pos_jumpkey);
     image_fire = Sprite::createWithSpriteFrame(frame_AB_normal);
-    image_fire->setPosition(pos_fireKey);
+    image_fire->setPosition(pos_firekey);
     
-    menu_leftKey = MenuItemImage::create("leftright.png", "AB_select.png",
-                                         CC_CALLBACK_1(GameLayer::menuCallBackLeft, this));
-    menu_leftKey->setPosition(pos_leftKey);
-    menu_rightKey = MenuItemImage::create("leftright.png", "AB_select.png",
-                                          CC_CALLBACK_1(GameLayer::menuCallBackRight, this));
-    menu_rightKey->setPosition(pos_rightKey);
-    menu_jumpKey = MenuItemImage::create("AB_normal.png", "AB_select.png",
-                                         CC_CALLBACK_1(GameLayer::menuCallBackJump, this));
-    menu_jumpKey->setPosition(pos_jumpKey);
-    menu_fireKey = MenuItemImage::create("AB_normal.png", "AB_select.png",
-                                         CC_CALLBACK_1(GameLayer::menuCallBackFire, this));
-    menu_fireKey->setPosition(pos_fireKey);
-    menu_setKey = MenuItemImage::create("M_n.png", "M_s.png",
+    menu_leftkey = MenuItemImage::create("leftright.png", "leftright.png");
+    menu_leftkey->setPosition(pos_leftkey);
+    menu_rightkey = MenuItemImage::create("leftright.png", "leftright.png");
+    menu_rightkey->setPosition(pos_rightkey);
+    menu_jumpkey = MenuItemImage::create("AB_normal.png", "AB_select.png");
+    menu_jumpkey->setPosition(pos_jumpkey);
+    menu_firekey = MenuItemImage::create("AB_normal.png", "AB_select.png");
+    menu_firekey->setPosition(pos_firekey);
+    
+    menu_setkey = MenuItemImage::create("M_n.png", "M_s.png",
                                         CC_CALLBACK_1(GameLayer::menuCallBackSet, this));
-    menu_setKey->setPosition(pos_setKey);
-    
-    menu = Menu::create(menu_leftKey,menu_rightKey,menu_jumpKey,menu_fireKey,menu_setKey,NULL);
+    menu_setkey->setPosition(pos_setkey);
+    menu = Menu::create(menu_setkey,NULL);
     menu->setPosition(Vec2(0,0));
     
     //
     this->addChild(controlUI);
-    this->addChild(image_backKey);
-    this->addChild(image_jump);
-    this->addChild(image_fire);
+    this->addChild(image_backkey);
+    this->addChild(image_jump,3);
+    this->addChild(image_fire,3);
     this->addChild(menu);
 }
 
 void GameLayer::initHeroAndMap()
 {
     main_map = GameMap::create("MarioMap1.tmx");
-    main_map->setPosition(Vec2(0,0));
+    main_map->setPosition(Vec2(-1500,0));
     map_size = Size(main_map->map_size.width*main_map->tile_size.width,
                     main_map->map_size.height*main_map->tile_size.height);
     
@@ -147,6 +203,36 @@ void GameLayer::initHeroAndMap()
     main_layer->addChild(hero);
     main_layer->setPosition(map_beginPos);
     this->addChild(main_layer);
+}
+
+#pragma mark -Menu
+
+void GameLayer::menuCallBackSet(cocos2d::Ref *sender)
+{
+    log("我努力的将这件事变得更加有趣起来!");
+}
+
+
+//以下按钮失效
+void GameLayer::menuCallBackLeft(Ref* sender)
+{
+    log("按左键你想干嘛？");
+    image_backkey->setSpriteFrame(frame_backkey_normal);
+    
+}
+void GameLayer::menuCallBackRight(cocos2d::Ref *sender)
+{
+    log("那按右键呢？");
+    image_backkey->setSpriteFrame(frame_backkey_normal);
+    
+}
+void GameLayer::menuCallBackJump(cocos2d::Ref *sender)
+{
+    log("跳起来就抓不到我了吧！");
+}
+void GameLayer::menuCallBackFire(cocos2d::Ref *sender)
+{
+    log("放开那个女孩！");
 }
 
 

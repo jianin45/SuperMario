@@ -33,35 +33,50 @@ public:
     //手柄相关
     Sprite* controlUI;//背景图
     
-    Sprite* image_backKey;
+    Sprite* image_backkey;
     Sprite* image_jump;
     Sprite* image_fire;
-    SpriteFrame* frame_backKey_normal;//单次点击时显示
-    SpriteFrame* frame_backKey_left;//长按时显示
-    SpriteFrame* frame_backKey_right;//同上
+    SpriteFrame* frame_backkey_normal;//单次点击时显示
+    SpriteFrame* frame_backkey_left;//长按时显示
+    SpriteFrame* frame_backkey_right;//同上
     SpriteFrame* frame_AB_normal;
     SpriteFrame* frame_AB_selected;
     
-    Point pos_backKey;//方向背景
-    Point pos_leftKey;
-    Point pos_rightKey;
-    Point pos_jumpKey;
-    Point pos_fireKey;
-    Point pos_setKey;
-    
     Menu* menu;//按键
-    MenuItem* menu_leftKey;
-    MenuItem* menu_rightKey;
-    MenuItem* menu_jumpKey;
-    MenuItem* menu_fireKey;
-    MenuItem* menu_setKey;
-   
+    MenuItemImageImage* menu_leftkey;
+    MenuItemImageImage* menu_rightkey;
+    MenuItemImage* menu_jumpkey;
+    MenuItemImage* menu_firekey;
+    MenuItemImage* menu_setkey;
+    
+    Point pos_backkey;//方向背景
+    Point pos_leftkey;
+    Point pos_rightkey;
+    Point pos_jumpkey;
+    Point pos_firekey;
+    Point pos_setkey;//
+    
+    Rect rect_leftkey;//按键区域
+    Rect rect_rightkey;
+    Rect rect_jumpkey;
+    Rect rect_firekey;
+    
+    
+#pragma mark -override
+    void update(float dt);
+    void onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event);
+    void onTouchesMoved(const std::vector<Touch*>& touches, Event *unused_event);
+    void onTouchesEnded(const std::vector<Touch*>& touches, Event *unused_event);
+    void onTouchesCancelled(const std::vector<Touch*>&touches, Event *unused_event);
+    
     
 #pragma mark -私有和不常用public
     
 private:
     void initHeroAndMap();//加载地图和英雄
     void initControlUI();//加载手柄
+    void initKeyRect();//初始化按钮区域
+    void addTouchListener();//加载触摸监听
     //按钮
     void menuCallBackLeft(Ref* sender);
     void menuCallBackRight(Ref* sender);

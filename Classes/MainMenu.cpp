@@ -134,7 +134,7 @@ void MainMenu::onTouchCancelled(Touch *touch, Event *pEvent)
 
 void MainMenu::onTouchMoved(Touch *touch, Event *pEvent)
 {
-    
+    log("？？？？？？");
 }
 
 
