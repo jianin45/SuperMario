@@ -42,6 +42,15 @@ main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx")
 1.按键弃用，因为MenuItem会屏蔽掉触摸分发事件；
 2.添加触摸分发事件的区域判断；
 
+2月9日
+1.新建精灵因为图片名字中字母大小写问题，导致初始化失败，失败时精灵对象为NULL;
+2.枚举类的向前声明问题；
+
+2月10日
+1.图片名字大小写问题再次出现问题；
+2.
+
+
 
 
 

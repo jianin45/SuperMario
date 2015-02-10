@@ -9,12 +9,13 @@
 #ifndef SuperMary_GameEnum_h
 #define SuperMary_GameEnum_h
 
-enum class MarioDirection : unsigned int
+enum class MarioState : unsigned int
 {
-    eLeft,eRight,
+    eLeft,eRight,            //跑动起来的状态，有动画
     eJumpLeft,eJumpRight,
-    eNormalLeft,eNormalRight,
-    eFireTheHole
+    eNormalLeft,eNormalRight,//静止状态
+    eFireTheHole,
+    eFlyBug                  //作弊状态，在空中飞行
 };
 
 

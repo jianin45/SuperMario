@@ -12,6 +12,11 @@
 #include "GameMap.h"
 #include "Hero.h"
 
+enum class TouchesStatement
+{
+    begin,
+    end
+};//触摸过程的状态
 
 GameLayer::GameLayer():
 
@@ -19,10 +24,11 @@ GameLayer::GameLayer():
 main_map(nullptr),map_size(Size::ZERO),map_beginPos(Vec2(0.0f,96.0f)),
 
 //英雄初始化
-hero(nullptr),hero_size(Vec2(0,0)),birth_pos(Vec2(20.0f,32.0f+100)),
+hero(nullptr),hero_size(Vec2(0,0)),birth_pos(Vec2(20.0f,32.0f)),
+move_offset(2.0f),
 
 //按键初始化
-pos_backkey(Vec2(84, 48)),pos_leftkey(Vec2(40, 48)),pos_rightkey(Vec2(128, 48)),
+pos_LOR(Vec2(84, 48)),pos_leftkey(Vec2(40, 48)),pos_rightkey(Vec2(128, 48)),
 pos_jumpkey(Vec2(432,35)),pos_firekey(Vec2(353, 35)),
 pos_setkey(Vec2(260,33))
 //
@@ -32,7 +38,7 @@ pos_setkey(Vec2(260,33))
     main_layer->retain();
     
     win_size = Director::getInstance()->getWinSize();
-    
+    win_middle = Vec2(win_size.width/2, win_size.height/2);
     
 }
 
@@ -63,41 +69,134 @@ bool GameLayer::init()
 void GameLayer::update(float dt)
 {
     Point pos_mapCurrent = main_map->getPosition();
-    if (-pos_mapCurrent.x <= map_size.width-win_size.width)
-    {
-        main_map->setPosition(Vec2(pos_mapCurrent.x-2, pos_mapCurrent.y));
-    }
-    else
-    {
-        main_map->setPosition(Vec2(0, 0));
-    }
     
+    //更新控制器
+    this->updateControl();
 }
 
+void GameLayer::updateControl()
+{
+    if (isDown_leftkey)
+    {
+        image_LOR->setDisplayFrame(frame_LOR_left);
+        hero->setHeroState(MarioState::eLeft);
+        
+        hero->setPosition(Vec2(hero->getPosition().x-move_offset, hero->getPosition().y));
+        main_map->setPosition(Vec2(main_map->getPosition().x+20, main_map->getPosition().y));
+    }
+    else if (isDown_rightkey)
+    {
+        image_LOR->setDisplayFrame(frame_LOR_right);
+        hero->setHeroState(MarioState::eRight);
+        
+        hero->setPosition(Vec2(hero->getPosition().x+move_offset, hero->getPosition().y));
+        main_map->setPosition(Vec2(main_map->getPosition().x-20, main_map->getPosition().y));
+    }
+    else if (isDown_jumpkey)
+    {
+        image_jump->setDisplayFrame(frame_AB_selected);
+        
+        hero->setPosition(win_middle);
+    }
+    else if (isDown_firekey)
+    {
+        image_fire->setDisplayFrame(frame_AB_selected);
+        
+        hero->setPosition(birth_pos);
+    }
+}
 
 
 #pragma mark -Touch
 
-void GameLayer::onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event)
+void GameLayer::disposeTouches(const std::vector<Touch*>& touches, TouchesStatement state)
 {
-    log("乱点！");
     for(auto& it:touches)
     {
         Touch* touch = (Touch*)it;
         Point pos_touch = touch->getLocation();
-        
+        if (rect_leftkey.containsPoint(pos_touch))
+        {
+            switch (state)
+            {
+                case TouchesStatement::begin:
+                    isDown_leftkey = true;
+                    break;
+                case TouchesStatement::end:
+                {
+                    isDown_leftkey = false;
+                    image_LOR->setDisplayFrame(frame_LOR_normal);
+                    hero->setHeroState(MarioState::eNormalLeft);
+                }
+                default:
+                    break;
+            }
+        }
+        else if (rect_rightkey.containsPoint(pos_touch))
+        {
+            switch (state)
+            {
+                case TouchesStatement::begin:
+                    isDown_rightkey = true;
+                    break;
+                case TouchesStatement::end:
+                {
+                    isDown_rightkey = false;
+                    image_LOR->setDisplayFrame(frame_LOR_normal);
+                    hero->setHeroState(MarioState::eNormalRight);
+                }
+                default:
+                    break;
+            }
+        }
+        else if (rect_jumpkey.containsPoint(pos_touch))
+        {
+            switch (state)
+            {
+                case TouchesStatement::begin:
+                    isDown_jumpkey = true;
+                    break;
+                case TouchesStatement::end:
+                {
+                    isDown_jumpkey = false;
+                    image_jump->setDisplayFrame(frame_AB_normal);
+                }
+                default:
+                    break;
+            }
+        }
+        else if (rect_firekey.containsPoint(pos_touch))
+        {
+            switch (state)
+            {
+                case TouchesStatement::begin:
+                    isDown_firekey = true;
+                    break;
+                case TouchesStatement::end:
+                    isDown_firekey = false;
+                    image_fire->setDisplayFrame(frame_AB_normal);
+                default:
+                    break;
+            }
+        }
     }
-    
 }
 
+void GameLayer::onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event)
+{
+    this->disposeTouches(touches, TouchesStatement::begin);
+}
+
+//移动时，不是长按
 void GameLayer::onTouchesMoved(const std::vector<Touch*>& touches, Event *unused_event)
 {
     log("我说，放…… …… …… ……开!");
+    
 }
 
 void GameLayer::onTouchesEnded(const std::vector<Touch*>& touches, Event *unused_event)
 {
-    log("放开就放开！");
+    this->disposeTouches(touches, TouchesStatement::end);
 }
 
 void GameLayer::onTouchesCancelled(const std::vector<Touch*>&touches, Event *unused_event)
@@ -107,7 +206,7 @@ void GameLayer::onTouchesCancelled(const std::vector<Touch*>&touches, Event *unu
 
 
 
-#pragma mark -Pravite
+#pragma mark -Pravite(部分)
 
 void GameLayer::addTouchListener()
 {
@@ -144,20 +243,20 @@ void GameLayer::initControlUI()
     controlUI = Sprite::create("controlUI.png");
     controlUI->setAnchorPoint(Vec2(0,0));
     
-    frame_backkey_normal = SpriteFrame::create("backkeyImage.png", Rect(0, 0, 72, 72));
-    frame_backkey_left = SpriteFrame::create("backkeyLeft.png", Rect(0, 0, 72, 72));
-    frame_backkey_right = SpriteFrame::create("backkeyRight.png", Rect(0, 0, 72, 72));
+    frame_LOR_normal = SpriteFrame::create("backKeyImage.png", Rect(0, 0, 72, 72));
+    frame_LOR_left = SpriteFrame::create("backKeyLeft.png", Rect(0, 0, 72, 72));
+    frame_LOR_right = SpriteFrame::create("backKeyRight.png", Rect(0, 0, 72, 72));
     frame_AB_normal = SpriteFrame::create("AB_normal.png", Rect(0,0,72,50));
     frame_AB_selected = SpriteFrame::create("AB_select.png", Rect(0,0,72,50));
     
-    frame_backkey_normal->retain();
-    frame_backkey_left->retain();
-    frame_backkey_right->retain();
+    frame_LOR_normal->retain();
+    frame_LOR_left->retain();
+    frame_LOR_right->retain();
     frame_AB_normal->retain();
     frame_AB_selected->retain();
     
-    image_backkey = Sprite::create("backkeyImage.png");
-    image_backkey->setPosition(pos_backkey);
+    image_LOR = Sprite::createWithSpriteFrame(frame_LOR_normal);
+    image_LOR->setPosition(pos_LOR);
     image_jump = Sprite::createWithSpriteFrame(frame_AB_normal);
     image_jump->setPosition(pos_jumpkey);
     image_fire = Sprite::createWithSpriteFrame(frame_AB_normal);
@@ -180,7 +279,7 @@ void GameLayer::initControlUI()
     
     //
     this->addChild(controlUI);
-    this->addChild(image_backkey);
+    this->addChild(image_LOR);
     this->addChild(image_jump,3);
     this->addChild(image_fire,3);
     this->addChild(menu);
@@ -189,7 +288,7 @@ void GameLayer::initControlUI()
 void GameLayer::initHeroAndMap()
 {
     main_map = GameMap::create("MarioMap1.tmx");
-    main_map->setPosition(Vec2(-1500,0));
+    main_map->setPosition(Vec2(0,0));
     map_size = Size(main_map->map_size.width*main_map->tile_size.width,
                     main_map->map_size.height*main_map->tile_size.height);
     
@@ -209,7 +308,8 @@ void GameLayer::initHeroAndMap()
 
 void GameLayer::menuCallBackSet(cocos2d::Ref *sender)
 {
-    log("我努力的将这件事变得更加有趣起来!");
+    log("将这件事变得更加有趣起来!");
+    
 }
 
 
@@ -217,13 +317,13 @@ void GameLayer::menuCallBackSet(cocos2d::Ref *sender)
 void GameLayer::menuCallBackLeft(Ref* sender)
 {
     log("按左键你想干嘛？");
-    image_backkey->setSpriteFrame(frame_backkey_normal);
+    image_LOR->setSpriteFrame(frame_LOR_normal);
     
 }
 void GameLayer::menuCallBackRight(cocos2d::Ref *sender)
 {
     log("那按右键呢？");
-    image_backkey->setSpriteFrame(frame_backkey_normal);
+    image_LOR->setSpriteFrame(frame_LOR_normal);
     
 }
 void GameLayer::menuCallBackJump(cocos2d::Ref *sender)
