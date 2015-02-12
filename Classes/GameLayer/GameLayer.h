@@ -88,6 +88,7 @@ private:
     void initKeyRect();//初始化按钮区域
     void addTouchListener();//加载触摸监听
     void updateControl();//更新控制器
+    
     //按钮
     void menuCallBackLeft(Ref* sender);
     void menuCallBackRight(Ref* sender);

@@ -52,17 +52,13 @@ bool GameLayer::init()
     log("进入游戏界面！");
     
     this->initHeroAndMap();
-    
     this->initControlUI();
-    
     this->initKeyRect();
     
     
     
     this->addTouchListener();
-    
     this->scheduleUpdate();
-    
     return true;
 }
 
@@ -278,7 +274,7 @@ void GameLayer::initControlUI()
     menu->setPosition(Vec2(0,0));
     
     //
-    this->addChild(controlUI);
+    //this->addChild(controlUI);
     this->addChild(image_LOR);
     this->addChild(image_jump,3);
     this->addChild(image_fire,3);

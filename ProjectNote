@@ -48,7 +48,9 @@ main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx")
 
 2月10日
 1.图片名字大小写问题再次出现问题；
-2.
+2.暂停项目；
+
+
 
 
 
