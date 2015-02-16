@@ -200,6 +200,7 @@
 		6206D63B1A7F12D800DE384B /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6206D6361A7F12D800DE384B /* Global.cpp */; };
 		6206D63F1A7F12E600DE384B /* SelectMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6206D63D1A7F12E600DE384B /* SelectMenu.cpp */; };
 		6206D6411A7F131300DE384B /* ProjectNote in Resources */ = {isa = PBXBuildFile; fileRef = 6206D6401A7F131300DE384B /* ProjectNote */; };
+		62077BE91A90478A002993B7 /* HandShank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 62077BE71A90478A002993B7 /* HandShank.cpp */; };
 		9F284B55A7B71B071916B6F9 /* res in Resources */ = {isa = PBXBuildFile; fileRef = A2DB4B988069559D32852337 /* res */; };
 		A17D4E19B09E1ADF7A2FD88C /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E34B46BD954417736CF0EEE6 /* libcocos2d Mac.a */; };
 		A9C64560B1FECC26721580B9 /* res in Resources */ = {isa = PBXBuildFile; fileRef = A2DB4B988069559D32852337 /* res */; };
@@ -416,6 +417,8 @@
 		6206D63D1A7F12E600DE384B /* SelectMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectMenu.cpp; sourceTree = "<group>"; };
 		6206D63E1A7F12E600DE384B /* SelectMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectMenu.h; sourceTree = "<group>"; };
 		6206D6401A7F131300DE384B /* ProjectNote */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ProjectNote; path = ../ProjectNote; sourceTree = "<group>"; };
+		62077BE71A90478A002993B7 /* HandShank.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HandShank.cpp; sourceTree = "<group>"; };
+		62077BE81A90478A002993B7 /* HandShank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandShank.h; sourceTree = "<group>"; };
 		A2DB4B988069559D32852337 /* res */ = {isa = PBXFileReference; lastKnownFileType = "?"; name = res; path = ../Resources/res; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -703,7 +706,7 @@
 				6206D62A1A7F12CA00DE384B /* MainMenu.cpp */,
 				6206D62B1A7F12CA00DE384B /* MainMenu.h */,
 				6206D63C1A7F12E600DE384B /* StartGame */,
-				6206D62D1A7F12D800DE384B /* GameLayer */,
+				6206D62D1A7F12D800DE384B /* GameScene */,
 				6206D6341A7F12D800DE384B /* Global */,
 			);
 			name = Classes;
@@ -765,16 +768,19 @@
 			path = fonts;
 			sourceTree = "<group>";
 		};
-		6206D62D1A7F12D800DE384B /* GameLayer */ = {
+		6206D62D1A7F12D800DE384B /* GameScene */ = {
 			isa = PBXGroup;
 			children = (
 				6206D62E1A7F12D800DE384B /* GameLayer.cpp */,
 				6206D62F1A7F12D800DE384B /* GameLayer.h */,
+				62077BE71A90478A002993B7 /* HandShank.cpp */,
+				62077BE81A90478A002993B7 /* HandShank.h */,
 				6206D6301A7F12D800DE384B /* GameMap.cpp */,
 				6206D6311A7F12D800DE384B /* GameMap.h */,
 				6206D6321A7F12D800DE384B /* Hero.cpp */,
 				6206D6331A7F12D800DE384B /* Hero.h */,
 			);
+			name = GameScene;
 			path = GameLayer;
 			sourceTree = "<group>";
 		};
@@ -1075,6 +1081,7 @@
 				6206D63B1A7F12D800DE384B /* Global.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				6206D6381A7F12D800DE384B /* GameLayer.cpp in Sources */,
+				62077BE91A90478A002993B7 /* HandShank.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

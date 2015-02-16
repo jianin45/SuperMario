@@ -50,6 +50,10 @@ main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx")
 1.图片名字大小写问题再次出现问题；
 2.暂停项目；
 
+2月16日
+在重构GameLayer代码时,this->addChild(main_layer)崩溃现象,
+之前并没有因为在layer上添加layer而发生;解决方案,将GameLayer重构
+成一个Scene;
 
 
 

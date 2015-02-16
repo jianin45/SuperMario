@@ -14,7 +14,7 @@
 
 using namespace cocos2d;
 
-class Hero : public Node
+class Hero : public Sprite
 {
     
 public:

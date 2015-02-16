@@ -10,9 +10,7 @@
 
 GameMap::GameMap()
 //mario_birthPos(Point::ZERO)
-
 {
-    
     
     
 }
