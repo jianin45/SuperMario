@@ -8,6 +8,7 @@
 
 #include "HandShank.h"
 
+
 enum class TouchesStatement
 {
     begin,
@@ -32,55 +33,37 @@ bool HandShank::init()
 {
     do
     {
-        CC_BREAK_IF(Layer::init());
+        CC_BREAK_IF(!Layer::init());
         
-        controlUI = Sprite::create("controlUI.png");
-        controlUI->setAnchorPoint(Vec2(0,0));
+        this->initShankUI();
+        this->initKeyRect();
         
-        frame_LOR_normal = SpriteFrame::create("backKeyImage.png", Rect(0, 0, 72, 72));
-        frame_LOR_left = SpriteFrame::create("backKeyLeft.png", Rect(0, 0, 72, 72));
-        frame_LOR_right = SpriteFrame::create("backKeyRight.png", Rect(0, 0, 72, 72));
-        frame_AB_normal = SpriteFrame::create("AB_normal.png", Rect(0,0,72,50));
-        frame_AB_selected = SpriteFrame::create("AB_select.png", Rect(0,0,72,50));
-        
-        frame_LOR_normal->retain();
-        frame_LOR_left->retain();
-        frame_LOR_right->retain();
-        frame_AB_normal->retain();
-        frame_AB_selected->retain();
-        
-        image_LOR = Sprite::createWithSpriteFrame(frame_LOR_normal);
-        image_LOR->setPosition(pos_LOR);
-        image_jump = Sprite::createWithSpriteFrame(frame_AB_normal);
-        image_jump->setPosition(pos_jumpkey);
-        image_fire = Sprite::createWithSpriteFrame(frame_AB_normal);
-        image_fire->setPosition(pos_firekey);
-        
-        menu_leftkey = MenuItemImage::create("leftright.png", "leftright.png");
-        menu_leftkey->setPosition(pos_leftkey);
-        menu_rightkey = MenuItemImage::create("leftright.png", "leftright.png");
-        menu_rightkey->setPosition(pos_rightkey);
-        menu_jumpkey = MenuItemImage::create("AB_normal.png", "AB_select.png");
-        menu_jumpkey->setPosition(pos_jumpkey);
-        menu_firekey = MenuItemImage::create("AB_normal.png", "AB_select.png");
-        menu_firekey->setPosition(pos_firekey);
-        
-        menu_setkey = MenuItemImage::create("M_n.png", "M_s.png",
-                                            CC_CALLBACK_1(HandShank::menuCallBackSet, this));
-        menu_setkey->setPosition(pos_setkey);
-        menu = Menu::create(menu_setkey,NULL);
-        menu->setPosition(Vec2(0,0));
-        
-        //
-        //this->addChild(controlUI);
-        this->addChild(image_LOR);
-        this->addChild(image_jump,3);
-        this->addChild(image_fire,3);
-        this->addChild(menu);
         
     } while (0);
 
     return true;
+}
+
+#pragma mark -设置按键状态
+
+void HandShank::setLeftKeySelected()
+{
+    image_LOR->setDisplayFrame(frame_LOR_left);
+}
+
+void HandShank::setRightKeySelected()
+{
+    image_LOR->setDisplayFrame(frame_LOR_right);
+}
+
+void HandShank::setJumpKeySelected()
+{
+    image_jump->setDisplayFrame(frame_AB_selected);
+}
+
+void HandShank::setFireKeySelected()
+{
+    image_fire->setDisplayFrame(frame_AB_selected);
 }
 
 #pragma mark -触摸事件
@@ -89,6 +72,7 @@ bool HandShank::init()
 void HandShank::onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event)
 {
     this->disposeTouches(touches, TouchesStatement::begin);
+    
 }
 
 //移动时，不是长按
@@ -185,6 +169,53 @@ void HandShank::disposeTouches(const std::vector<Touch*>& touches, TouchesStatem
 }
 
 
+void HandShank::initShankUI()
+{
+    controlUI = Sprite::create("controlUI.png");
+    controlUI->setAnchorPoint(Vec2(0,0));
+    
+    frame_LOR_normal = SpriteFrame::create("backKeyImage.png", Rect(0, 0, 72, 72));
+    frame_LOR_left = SpriteFrame::create("backKeyLeft.png", Rect(0, 0, 72, 72));
+    frame_LOR_right = SpriteFrame::create("backKeyRight.png", Rect(0, 0, 72, 72));
+    frame_AB_normal = SpriteFrame::create("AB_normal.png", Rect(0,0,72,50));
+    frame_AB_selected = SpriteFrame::create("AB_select.png", Rect(0,0,72,50));
+    
+    frame_LOR_normal->retain();
+    frame_LOR_left->retain();
+    frame_LOR_right->retain();
+    frame_AB_normal->retain();
+    frame_AB_selected->retain();
+    
+    image_LOR = Sprite::createWithSpriteFrame(frame_LOR_normal);
+    image_LOR->setPosition(pos_LOR);
+    image_jump = Sprite::createWithSpriteFrame(frame_AB_normal);
+    image_jump->setPosition(pos_jumpkey);
+    image_fire = Sprite::createWithSpriteFrame(frame_AB_normal);
+    image_fire->setPosition(pos_firekey);
+    
+    menu_leftkey = MenuItemImage::create("leftright.png", "leftright.png");
+    menu_leftkey->setPosition(pos_leftkey);
+    menu_rightkey = MenuItemImage::create("leftright.png", "leftright.png");
+    menu_rightkey->setPosition(pos_rightkey);
+    menu_jumpkey = MenuItemImage::create("AB_normal.png", "AB_select.png");
+    menu_jumpkey->setPosition(pos_jumpkey);
+    menu_firekey = MenuItemImage::create("AB_normal.png", "AB_select.png");
+    menu_firekey->setPosition(pos_firekey);
+    
+    menu_setkey = MenuItemImage::create("M_n.png", "M_s.png",
+                                        CC_CALLBACK_1(HandShank::menuCallBackSet, this));
+    menu_setkey->setPosition(pos_setkey);
+    menu = Menu::create(menu_setkey,NULL);
+    menu->setPosition(Vec2(0,0));
+    
+    
+    this->addChild(controlUI);
+    this->addChild(image_LOR);
+    this->addChild(image_jump,3);
+    this->addChild(image_fire,3);
+    this->addChild(menu);
+}
+
 void HandShank::initKeyRect()
 {
     rect_leftkey = Rect(pos_leftkey.x-menu_leftkey->getContentSize().width/2,
@@ -208,7 +239,7 @@ void HandShank::initKeyRect()
 
 void HandShank::menuCallBackSet(cocos2d::Ref *sender)
 {
-    
+    log("测试设置按键;");
 }
 
 

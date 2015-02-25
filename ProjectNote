@@ -55,6 +55,17 @@ main_map = (GameMap*)cocos2d::experimental::TMXTiledMap::create("MarioMap1.tmx")
 之前并没有因为在layer上添加layer而发生;解决方案,将GameLayer重构
 成一个Scene;
 
+2月18日(除夕)
+16日的问题出现在Hero类上,将Hero继承自Sprite时会崩溃,继承自Node时不会崩溃;
+
+2月20日
+Hero问题解决后,其他问题逐渐解决,手柄类封装成功;因为GameLayer可以访问到画面所有指针,
+所以为方便访问写成singletoe;
+
+
+
+
+
 
 
 

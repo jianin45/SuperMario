@@ -25,15 +25,24 @@ public:
     bool init();
     CREATE_FUNC(HandShank);
    
+    //当按下某个键时
     bool isDown_leftkey;
     bool isDown_rightkey;
     bool isDown_jumpkey;
     bool isDown_firekey;
     
-    Rect rect_leftkey;//按键区域
+    //改变按键状态
+    void setLeftKeySelected();
+    void setRightKeySelected();
+    void setJumpKeySelected();
+    void setFireKeySelected();
+    
+    //按键区域
+    Rect rect_leftkey;
     Rect rect_rightkey;
     Rect rect_jumpkey;
     Rect rect_firekey;
+    
     
     void onTouchesBegan(const std::vector<Touch*>& touches, Event *unused_event);
     void onTouchesMoved(const std::vector<Touch*>& touches, Event *unused_event);
@@ -47,6 +56,7 @@ private:
     Sprite* image_LOR;
     Sprite* image_jump;
     Sprite* image_fire;
+    
     SpriteFrame* frame_LOR_normal;//单次点击时显示
     SpriteFrame* frame_LOR_left;//长按时显示
     SpriteFrame* frame_LOR_right;//同上
@@ -67,7 +77,7 @@ private:
     Point pos_firekey;//B键
     Point pos_setkey;//
     
-    
+    void initShankUI();//按键布局
     void initKeyRect();//初始化按钮区域
     void menuCallBackSet(Ref* sender);
     /**

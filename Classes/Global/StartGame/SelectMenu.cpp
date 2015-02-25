@@ -84,7 +84,8 @@ void SelectMenu::menuBegin(cocos2d::Ref *pSender)
 {
     //后续会在这里处理与关卡有关的内容
     
-    GameLayer* game_layer = GameLayer::create();
+    GameLayer* game_layer = GameLayer::getInstance();
+    
     Scene* p_scene = Scene::create();
     p_scene->addChild(game_layer);
     

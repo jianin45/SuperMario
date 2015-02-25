@@ -14,7 +14,10 @@
 
 using namespace cocos2d;
 
-class Hero : public Sprite
+/**
+ *  当Hero继承自Sprite,这时一个Layer试图用this->addChild()添加到其上,会因为绘制问题而崩溃,具体原因可能是底层绘制的逻辑问题,需要再查
+ */
+class Hero : public Node
 {
     
 public:
@@ -62,17 +65,3 @@ private:
 };
 
 #endif /* defined(__SuperMarry__Hero__) */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
